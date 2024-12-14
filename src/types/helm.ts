@@ -34,8 +34,8 @@ export interface HelmVersion {
 
 export interface CommonConfig {
   replicaCount: number;
-  domain: string;
-  auth: {
+  domain?: string;
+  auth?: {
     username: string;
     password: string;
   };
@@ -53,5 +53,54 @@ export interface CommonConfig {
       cpu: string;
       memory: string;
     };
+  };
+  monitoring?: {
+    enabled: boolean;
+    scrapeInterval: string;
+  };
+  ingress?: {
+    enabled: boolean;
+    annotations: Record<string, string>;
+  };
+  security?: {
+    podSecurityContext: {
+      runAsNonRoot: boolean;
+      runAsUser: number;
+    };
+    containerSecurityContext: {
+      allowPrivilegeEscalation: boolean;
+      readOnlyRootFilesystem: boolean;
+    };
+  };
+}
+
+export interface StorageConfig extends CommonConfig {
+  storage: {
+    bucketName?: string;
+    region?: string;
+    containerName?: string;
+    projectId?: string;
+    location?: string;
+    encryption?: {
+      enabled: boolean;
+      algorithm?: string;
+      keyType?: string;
+      kmsKeyName?: string;
+    };
+    versioning?: {
+      enabled: boolean;
+    };
+    lifecycle?: {
+      enabled: boolean;
+      transitionDays?: number;
+      expirationDays?: number;
+      coolAfterDays?: number;
+      archiveAfterDays?: number;
+      deleteAfterDays?: number;
+      nearlineDays?: number;
+      coldlineDays?: number;
+      archiveDays?: number;
+    };
+    accessTier?: string;
   };
 }
